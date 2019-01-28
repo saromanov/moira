@@ -40,8 +40,9 @@ func (sender *Sender) SendEvents(events moira.NotificationEvents, contact moira.
 	var message bytes.Buffer
 	state := events.GetSubjectState()
 	tags := trigger.GetTags()
-	message.WriteString(fmt.Sprintf("*%s* %s <%s/trigger/%s|%s>\n %s \n```",
-		state, tags, sender.FrontURI, events[0].TriggerID, trigger.Name, trigger.Desc))
+	message.WriteString(fmt.Sprintf("*%s* %s <%s|%s>\n %s \n```",
+		state, tags, trigger.GetTriggerLink(sender.FrontURI), trigger.Name, trigger.Desc))
+
 	icon := fmt.Sprintf("%s/public/fav72_ok.png", sender.FrontURI)
 	for _, event := range events {
 		if event.State != "OK" {

@@ -80,7 +80,7 @@ func (sender *Sender) SendEvents(events moira.NotificationEvents, contact moira.
 		Retry:     5 * time.Minute,
 		Expire:    time.Hour,
 		Timestamp: timestamp,
-		URL:       fmt.Sprintf("%s/trigger/%s", sender.FrontURI, events[0].TriggerID),
+		URL:       trigger.GetTriggerLink(sender.FrontURI),
 	}
 
 	if len(plot) > 0 {

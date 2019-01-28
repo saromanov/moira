@@ -117,7 +117,6 @@ func (sender *Sender) Init(senderSettings map[string]string, logger moira.Logger
 func (sender *Sender) SendEvents(events moira.NotificationEvents, contact moira.ContactData, trigger moira.TriggerData, plot []byte, throttled bool) error {
 
 	m := sender.makeMessage(events, contact, trigger, plot, throttled)
-
 	d := gomail.Dialer{
 		Host: sender.SMTPhost,
 		Port: int(sender.SMTPport),
@@ -145,7 +144,7 @@ func (sender *Sender) makeMessage(events moira.NotificationEvents, contact moira
 	subject := fmt.Sprintf("%s %s %s (%d)", state, trigger.Name, tags, len(events))
 
 	templateData := triggerData{
-		Link:         fmt.Sprintf("%s/trigger/%s", sender.FrontURI, events[0].TriggerID),
+		Link:         trigger.GetTriggerLink(sender.FrontURI),
 		Description:  formatDescription(trigger.Desc),
 		Throttled:    throttled,
 		TriggerName:  trigger.Name,
