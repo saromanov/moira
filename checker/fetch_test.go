@@ -14,7 +14,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestGetTimeSeries(t *testing.T) {
+func TestFetch(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	dataBase := mock_moira_alert.NewMockDatabase(mockCtrl)
 	source := mock_metric_source.NewMockMetricSource(mockCtrl)
@@ -239,7 +239,7 @@ func TestGetTimeSeries(t *testing.T) {
 }
 
 func TestGetExpressionValues(t *testing.T) {
-	Convey("Has only main timeSeries", t, func() {
+	Convey("Has only main metric data", t, func() {
 		metricData := &metricSource.MetricData{
 			Name:      "m",
 			StartTime: 17,

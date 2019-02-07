@@ -59,7 +59,7 @@ func (triggerChecker *TriggerChecker) checkTriggerMetrics(triggerMetricsData *me
 
 	for _, metricData := range metricsDataToCheck {
 		triggerChecker.logger.Debugf("[TriggerID:%s] Checking metricData %s: %v", triggerChecker.triggerID, metricData.Name, metricData.Values)
-		triggerChecker.logger.Debugf("[TriggerID:%s][TimeSeries:%s] Checking interval: %v - %v (%vs), step: %v", triggerChecker.triggerID, metricData.Name, metricData.StartTime, metricData.StopTime, metricData.StepTime, metricData.StopTime-metricData.StartTime)
+		triggerChecker.logger.Debugf("[TriggerID:%s][MetricName:%s] Checking interval: %v - %v (%vs), step: %v", triggerChecker.triggerID, metricData.Name, metricData.StartTime, metricData.StopTime, metricData.StepTime, metricData.StopTime-metricData.StartTime)
 
 		metricState, needToDeleteMetric, err := triggerChecker.checkMetricData(metricData, triggerMetricsData)
 		if needToDeleteMetric {
@@ -87,7 +87,7 @@ func (triggerChecker *TriggerChecker) getMetricsToCheck(fetchedMetrics []*metric
 
 	for _, metricData := range fetchedMetrics {
 		if _, ok := metricNamesHash[metricData.Name]; ok {
-			triggerChecker.logger.Debugf("[TriggerID:%s][TimeSeries:%s] Trigger has same timeseries names", triggerChecker.triggerID, metricData.Name)
+			triggerChecker.logger.Debugf("[TriggerID:%s][MetricName:%s] Trigger has same metric names", triggerChecker.triggerID, metricData.Name)
 			duplicateNames = append(duplicateNames, metricData.Name)
 			continue
 		}
@@ -185,7 +185,7 @@ func (triggerChecker *TriggerChecker) checkForNoData(metricData *metricSource.Me
 	if metricLastState.Timestamp+triggerChecker.ttl >= lastCheckTimeStamp {
 		return false, nil
 	}
-	triggerChecker.logger.Debugf("[TriggerID:%s][TimeSeries:%s] Metric TTL expired for state %v", triggerChecker.triggerID, metricData.Name, metricLastState)
+	triggerChecker.logger.Debugf("[TriggerID:%s][MetricName:%s] Metric TTL expired for state %v", triggerChecker.triggerID, metricData.Name, metricLastState)
 	if triggerChecker.ttlState == DEL && metricLastState.EventTimestamp != 0 {
 		return true, nil
 	}
@@ -203,7 +203,7 @@ func (triggerChecker *TriggerChecker) getMetricStepsStates(triggerMetricsData *m
 	stepTime := metricData.StepTime
 
 	checkPoint := metricLastState.GetCheckPoint(checkPointGap)
-	triggerChecker.logger.Debugf("[TriggerID:%s][TimeSeries:%s] Checkpoint: %v", triggerChecker.triggerID, metricData.Name, checkPoint)
+	triggerChecker.logger.Debugf("[TriggerID:%s][MetricName:%s] Checkpoint: %v", triggerChecker.triggerID, metricData.Name, checkPoint)
 
 	metricStates := make([]moira.MetricState, 0)
 
@@ -229,7 +229,7 @@ func (triggerChecker *TriggerChecker) getMetricDataState(triggerMetricsData *met
 	if !noEmptyValues {
 		return nil, nil
 	}
-	triggerChecker.logger.Debugf("[TriggerID:%s][TimeSeries:%s] Values for ts %v: MainTargetValue: %v, additionalTargetValues: %v", triggerChecker.triggerID, metricData.Name, valueTimestamp, triggerExpression.MainTargetValue, triggerExpression.AdditionalTargetsValues)
+	triggerChecker.logger.Debugf("[TriggerID:%s][MetricName:%s] Values for ts %v: MainTargetValue: %v, additionalTargetValues: %v", triggerChecker.triggerID, metricData.Name, valueTimestamp, triggerExpression.MainTargetValue, triggerExpression.AdditionalTargetsValues)
 
 	triggerExpression.WarnValue = triggerChecker.trigger.WarnValue
 	triggerExpression.ErrorValue = triggerChecker.trigger.ErrorValue
